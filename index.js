@@ -1,16 +1,19 @@
+import dotenv from 'dotenv';
+
+// Load environment variables first
+dotenv.config();
+
 import express from 'express';
 import './config/database.js';
 import routes from './routes/index.js';
 import cookieParser from 'cookie-parser';
-import dotenv from 'dotenv';
 import cors from 'cors';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 
-dotenv.config();
-
 const app = express();
 const port = 3001;
+
 
 // Swagger configuration
 const swaggerOptions = {
