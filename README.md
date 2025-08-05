@@ -34,14 +34,22 @@ cd hrms_bacend
 npm install
 ```
 
-3. Create a `.env` file in the root directory and add your environment variables:
+3. Create a `.env` file in the root directory by copying from the example:
+```bash
+cp .env.example .env
+```
+
+4. Update the `.env` file with your actual values:
 ```env
-MONGODB_URI=mongodb://localhost:27017/hrms_db
-JWT_SECRET=your_jwt_secret_key
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/database_name
+JWT_SECRET=your_super_secret_jwt_key_here
+NODE_ENV=development
+EMAIL_USERNAME=your-email@gmail.com
+EMAIL_PASSWORD=your-app-password
 PORT=3001
 ```
 
-4. Start the server:
+5. Start the server:
 ```bash
 # Development mode with auto-restart
 npm run dev
