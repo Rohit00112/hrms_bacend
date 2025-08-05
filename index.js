@@ -4,11 +4,47 @@ import routes from './routes/index.js';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
 dotenv.config();
 
 const app = express();
 const port = 3001;
+
+// Swagger configuration
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'HRMS API',
+            version: '1.0.0',
+            description: 'Human Resource Management System API Documentation',
+            contact: {
+                name: 'HRMS Team',
+                email: 'admin@hrms.com'
+            }
+        },
+        servers: [
+            {
+                url: `http://localhost:${port}`,
+                description: 'Development server'
+            }
+        ],
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT'
+                }
+            }
+        }
+    },
+    apis: ['./routes/*.js', './index.js'] // Path to the API files
+};
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
 // Middleware
 app.use(cors({
@@ -18,6 +54,13 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static('uploads'));
+
+// Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+    explorer: true,
+    customCss: '.swagger-ui .topbar { display: none }',
+    customSiteTitle: 'HRMS API Documentation'
+}));
 
 
 // seed admin user
@@ -50,4 +93,5 @@ app.use('/api', routes);
 
 app.listen(port, () => {
     console.log(`Server listening at http://localhost:${port}`);
+    console.log(`API Documentation available at http://localhost:${port}/api-docs`);
 })
